@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Page</title>
+</head>
+<body>
+<h1>Welcome Employer</h1>
+<div th:if="${employer != null}">
+    <p th:text="'Employee ID: ' + ${employer.employeeId}"></p>
+    <p th:text="'First Name: ' + ${employer.firstName}"></p>
+    <p th:text="'Last Name: ' + ${employer.lastName}"></p>
+    <!-- Add more details here -->
+</div>
+<div th:unless="${employer != null}">
+    <p>Employer details not found.</p>
+</div>
+</body>
+</html>

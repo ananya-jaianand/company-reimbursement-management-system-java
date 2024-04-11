@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Company Reimbursement Management System</title>
+</head>
+<body>
+<h1 th:text="${title}">Company Reimbursement Management System</h1>
+<form action="/login" method="post">
+    <label>
+        <input type="radio" name="role" value="employee"> Employee
+    </label>
+    <label>
+        <input type="radio" name="role" value="employer"> Employer
+    </label>
+    <br>
+    <input type="text" name="id" placeholder="Enter ID">
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

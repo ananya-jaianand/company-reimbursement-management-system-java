@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Page</title>
+    <script type="text/javascript">
+        function displaySelectedOption() {
+            var selectBox = document.getElementById("reimbursementActions");
+            var selectedOption = selectBox.options[selectBox.selectedIndex].text;
+            document.getElementById("selectedOptionText").innerText = selectedOption;
+
+            if (selectedOption === "Create a reimbursement") {
+                document.getElementById("reimbursementForm").style.display = "block";
+            } else {
+                document.getElementById("reimbursementForm").style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Welcome Employee</h1>
+<div th:if="${employee != null}">
+    <p th:text="'Employee ID: ' + ${employee.employeeId}"></p>
+    <p th:text="'First Name: ' + ${employee.firstName}"></p>
+    <p th:text="'Last Name: ' + ${employee.lastName}"></p>
+    <!-- Add more details here -->
+</div>
+<div th:unless="${employee != null}">
+    <p>Employee details not found.</p>
+</div>
+
+<!-- Dropdown box for reimbursement actions -->
+<select id="reimbursementActions" onchange="displaySelectedOption()">
+    <option value="" selected disabled>Select an action</option>
+    <option value="create">Create a reimbursement</option>
+    <option value="change">Change a pending reimbursement</option>
+    <option value="delete">Delete a pending reimbursement</option>
+    <option value="viewHistory">View reimbursement history</option>
+    <option value="viewApprovedHistory">View approved reimbursement history</option>
+</select>
+
+<!-- Display selected option text -->
+<p id="selectedOptionText"></p>
+
+<!-- Reimbursement form -->
+<!--<form id="reimbursementForm" style="display: none;" method="post" th:action="@{/employee/{id}/createReimbursement(id=${employee.employeeId})}">-->
+<!--    <label for="category">Category:</label>-->
+<!--    <select id="category" name="reimbursement.categoryId">-->
+<!--        &lt;!&ndash; Populate options dynamically from database &ndash;&gt;-->
+<!--        <option value="">Select category</option>-->
+<!--        &lt;!&ndash; Thymeleaf iteration to populate category options &ndash;&gt;-->
+<!--        <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>-->
+<!--    </select><br>-->
+<!--    <label for="amountRequested">Amount Requested:</label>-->
+<!--    <input type="text" id="amountRequested" name="reimbursement.amountRequested"><br>-->
+<!--    <label for="receiptId">Receipt ID:</label>-->
+<!--    <input type="text" id="receiptId" name="reimbursement.receiptId"><br>-->
+<!--    <label for="documentDate">Document Date:</label>-->
+<!--    <input type="date" id="documentDate" name="reimbursement.documentDate"><br>-->
+<!--    <label for="vendorName">Vendor Name:</label>-->
+<!--    <input type="text" id="vendorName" name="reimbursement.vendorName"><br>-->
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
+
+<form id="reimbursementForm" style="display: none;" method="post" th:action="@{/employee/{id}/createReimbursement(id=${employee.employeeId})}">
+    <label for="category">Category:</label>
+    <select id="category" name="categoryId"> <!-- Corrected the name attribute -->
+        <!-- Populate options dynamically from database -->
+        <option value="">Select category</option>
+        <!-- Thymeleaf iteration to populate category options -->
+        <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+    </select><br>
+    <label for="amountRequested">Amount Requested:</label>
+    <input type="text" id="amountRequested" name="amountRequested"><br>
+    <label for="receiptId">Receipt ID:</label>
+    <input type="text" id="receiptId" name="receiptId"><br>
+    <label for="documentDate">Document Date:</label>
+    <input type="date" id="documentDate" name="documentDate" th:field="*{documentDate}"><br>
+    <label for="vendorName">Vendor Name:</label>
+    <input type="text" id="vendorName" name="vendorName"><br>
+    <input type="submit" value="Submit">
+</form>
+
+
+
+</body>
+</html>
