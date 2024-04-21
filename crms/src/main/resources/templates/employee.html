@@ -3,22 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <title>Employee Page</title>
+    <style>
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #welcome-section {
+        padding: 20px;
+        margin: 20px auto;
+        width: 20%;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    select, input[type="text"],input[type="date"] {
+        display: block;
+        width: 50%;
+        padding: 10px;
+        margin: 10px auto;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    select {
+        margin-top: 20px; /* Increase margin-top for select */
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form div {
+        text-align: center;
+    }
+
+    form p {
+        text-align: center;
+    }
+
+    #reimbursementForm ,#pendingreimbursements, #approvedreimbursements, #deniedreimbursements {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    /* Display flex to align buttons horizontally */
+    .buttons-container {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    /* Change color and font size for buttons */
+    .buttons-container button {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .buttons-container button:hover {
+        background-color: #0056b3;
+    }
+
+
+    </style>
     <script type="text/javascript">
         function displaySelectedOption() {
             var selectBox = document.getElementById("reimbursementActions");
             var selectedOption = selectBox.options[selectBox.selectedIndex].text;
-            document.getElementById("selectedOptionText").innerText = selectedOption;
+<!--            document.getElementById("selectedOptionText").innerText = selectedOption;-->
 
             if (selectedOption === "Create a reimbursement") {
                 document.getElementById("reimbursementForm").style.display = "block";
             } else {
                 document.getElementById("reimbursementForm").style.display = "none";
             }
+
+            if (selectedOption === "View pending reimbursement history") {
+                document.getElementById("pendingreimbursements").style.display = "block";
+            } else {
+                document.getElementById("pendingreimbursements").style.display = "none";
+            }
+
+            if (selectedOption === "View approved reimbursement history") {
+                document.getElementById("approvedreimbursements").style.display = "block";
+            } else {
+                document.getElementById("approvedreimbursements").style.display = "none";
+            }
+
+            if (selectedOption === "View denied reimbursement history") {
+                document.getElementById("deniedreimbursements").style.display = "block";
+            } else {
+                document.getElementById("deniedreimbursements").style.display = "none";
+            }
+
+
         }
+
+
+
     </script>
 </head>
 <body>
-<h1>Welcome Employee</h1>
+<h1>Company Reimbursement Management System</h1>
+<div id="welcome-section">
+<h3>Welcome Employee</h3>
 <div th:if="${employee != null}">
     <p th:text="'Employee ID: ' + ${employee.employeeId}"></p>
     <p th:text="'First Name: ' + ${employee.firstName}"></p>
@@ -28,41 +168,22 @@
 <div th:unless="${employee != null}">
     <p>Employee details not found.</p>
 </div>
+</div>
 
-<!-- Dropdown box for reimbursement actions -->
 <select id="reimbursementActions" onchange="displaySelectedOption()">
     <option value="" selected disabled>Select an action</option>
     <option value="create">Create a reimbursement</option>
-    <option value="change">Change a pending reimbursement</option>
-    <option value="delete">Delete a pending reimbursement</option>
-    <option value="viewHistory">View reimbursement history</option>
+    <option value="viewPendingHistory">View pending reimbursement history</option>
     <option value="viewApprovedHistory">View approved reimbursement history</option>
+    <option value="viewDeniedHistory">View denied reimbursement history</option>
 </select>
 
 <!-- Display selected option text -->
 <p id="selectedOptionText"></p>
 
-<!-- Reimbursement form -->
-<!--<form id="reimbursementForm" style="display: none;" method="post" th:action="@{/employee/{id}/createReimbursement(id=${employee.employeeId})}">-->
-<!--    <label for="category">Category:</label>-->
-<!--    <select id="category" name="reimbursement.categoryId">-->
-<!--        &lt;!&ndash; Populate options dynamically from database &ndash;&gt;-->
-<!--        <option value="">Select category</option>-->
-<!--        &lt;!&ndash; Thymeleaf iteration to populate category options &ndash;&gt;-->
-<!--        <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>-->
-<!--    </select><br>-->
-<!--    <label for="amountRequested">Amount Requested:</label>-->
-<!--    <input type="text" id="amountRequested" name="reimbursement.amountRequested"><br>-->
-<!--    <label for="receiptId">Receipt ID:</label>-->
-<!--    <input type="text" id="receiptId" name="reimbursement.receiptId"><br>-->
-<!--    <label for="documentDate">Document Date:</label>-->
-<!--    <input type="date" id="documentDate" name="reimbursement.documentDate"><br>-->
-<!--    <label for="vendorName">Vendor Name:</label>-->
-<!--    <input type="text" id="vendorName" name="reimbursement.vendorName"><br>-->
-<!--    <input type="submit" value="Submit">-->
-<!--</form>-->
 
 <form id="reimbursementForm" style="display: none;" method="post" th:action="@{/employee/{id}/createReimbursement(id=${employee.employeeId})}">
+    <h2>Create a Reimbursement</h2>
     <label for="category">Category:</label>
     <select id="category" name="categoryId"> <!-- Corrected the name attribute -->
         <!-- Populate options dynamically from database -->
@@ -75,13 +196,116 @@
     <label for="receiptId">Receipt ID:</label>
     <input type="text" id="receiptId" name="receiptId"><br>
     <label for="documentDate">Document Date:</label>
-    <input type="date" id="documentDate" name="documentDate" th:field="*{documentDate}"><br>
+    <input type="date" id="documentDate" name="documentDate"><br><br>
     <label for="vendorName">Vendor Name:</label>
     <input type="text" id="vendorName" name="vendorName"><br>
     <input type="submit" value="Submit">
 </form>
 
+<div id ="pendingreimbursements" style="display: none;">
+    <h2>Pending Reimbursements</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Date Submitted</th>
+            <th>Category</th>
+            <th>Amount Requested</th>
+            <th>Receipt ID</th>
+            <th>Document Date</th>
+            <th>Vendor Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="reimbursement : ${pendingReimbursements}">
+            <tr>
+                <td th:text="${reimbursement.requestId}"></td>
+                <td th:text="${reimbursement.dateSubmitted}"></td>
+                <td th:text="${reimbursement.category.categoryName}"></td>
+                <td th:text="${reimbursement.amountRequested}"></td>
+                <td th:text="${reimbursement.receiptId}"></td>
+                <td th:text="${reimbursement.documentDate}"></td>
+                <td th:text="${reimbursement.vendorName}"></td>
+                <td>
+                    <a th:href="@{/employee/{id}/edit/{requestid}(id=${employee.employeeId},requestid=${reimbursement.requestId})}">Edit</a>
+                    <a th:href="@{/employee/{id}/delete/{requestid}(id=${employee.employeeId},requestid=${reimbursement.requestId})}">Delete</a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
 
+
+<form id ="approvedreimbursements"  style="display: none;" >
+    <!-- Your HTML code for displaying pending reimbursements -->
+
+    <h2>Approved Reimbursements</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Date Submitted</th>
+            <th>Category</th>
+            <th>Amount Requested</th>
+            <th>Receipt ID</th>
+            <th>Document Date</th>
+            <th>Vendor Name</th>
+            <th>Amount reimbursed</th>
+            <th>Date reimbursed</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="payment : ${approvedReimbursements}">
+            <tr>
+                <td th:text="${payment.reimbursement.requestId}"></td>
+                <td th:text="${payment.reimbursement.dateSubmitted}"></td>
+                <td th:text="${payment.reimbursement.category.categoryName}"></td>
+                <td th:text="${payment.reimbursement.amountRequested}"></td>
+                <td th:text="${payment.reimbursement.receiptId}"></td>
+                <td th:text="${payment.reimbursement.documentDate}"></td>
+                <td th:text="${payment.reimbursement.vendorName}"></td>
+                <td th:text="${payment.paymentAmount}"></td>
+                <td th:text="${payment.paymentDate}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</form>
+
+<form id ="deniedreimbursements"  style="display: none;" >
+    <!-- Your HTML code for displaying pending reimbursements -->
+
+    <h2>Denied Reimbursements</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Date Submitted</th>
+            <th>Category</th>
+            <th>Amount Requested</th>
+            <th>Receipt ID</th>
+            <th>Document Date</th>
+            <th>Vendor Name</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="reimbursement : ${deniedReimbursements}">
+            <tr>
+                <td th:text="${reimbursement.requestId}"></td>
+                <td th:text="${reimbursement.dateSubmitted}"></td>
+                <td th:text="${reimbursement.category.categoryName}"></td>
+                <td th:text="${reimbursement.amountRequested}"></td>
+                <td th:text="${reimbursement.receiptId}"></td>
+                <td th:text="${reimbursement.documentDate}"></td>
+                <td th:text="${reimbursement.vendorName}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</form>
 
 </body>
 </html>

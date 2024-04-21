@@ -1,16 +1,21 @@
 package com.example.crms.models;
 
+import com.example.crms.repositories.ReimbursementRepository;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Reimbursement")
 @Data
 public class Reimbursement {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +59,5 @@ public class Reimbursement {
     @JoinColumn(name = "Status_Id", referencedColumnName = "Status_Id", insertable = false, updatable = false)
     private Status status;
 
-    // Constructors, getters, and setters
+
 }

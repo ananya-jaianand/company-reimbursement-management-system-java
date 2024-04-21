@@ -3,17 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <title>Employer Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+         #welcome-section {
+            padding: 20px;
+            margin: 20px auto;
+            width: 20%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"], button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover, button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
 </head>
+
 <body>
-<h1>Welcome Employer</h1>
-<div th:if="${employer != null}">
-    <p th:text="'Employee ID: ' + ${employer.employeeId}"></p>
-    <p th:text="'First Name: ' + ${employer.firstName}"></p>
-    <p th:text="'Last Name: ' + ${employer.lastName}"></p>
-    <!-- Add more details here -->
+<!--<h1>Welcome <span th:text="${employer.firstName}"></span> <span th:text="${employer.lastName}"></span></h1>-->
+<!--<div th:if="${employer != null}">-->
+<!--    <p th:text="'Employee ID: ' + ${employer.employeeId}"></p>-->
+<!--</div>-->
+
+<h1>Company Reimbursement Management System</h1>
+<div id="welcome-section">
+    <h3>Welcome Employer!</h3>
+    <div th:if="${employer != null}">
+        <p th:text="'Employee ID: ' + ${employer.employeeId}"></p>
+        <p th:text="'First Name: ' + ${employer.firstName}"></p>
+        <p th:text="'Last Name: ' + ${employer.lastName}"></p>
+    </div>
 </div>
-<div th:unless="${employer != null}">
-    <p>Employer details not found.</p>
-</div>
+
+<h2>To view requests please fill the following:</h2>
+<!-- taking inputs from employer for viewing reimbursements-->
+<form id="viewReimbursementsDropdown"  method="get" th:action="@{/employer_actions/{id}/viewReimbursements(id=${employer.employeeId})}" >
+    <!--    <input type="radio" id="showAll" name="showAll" value="true" onchange="disableDropdowns()"><label for="showAll">Show All</label><br>-->
+    <input type="checkbox" id="showAll" name="showAll" value="true" onchange="disableDropdowns()">
+    <label for="showAll">Show All</label><br>
+
+    <label for="category">Category:</label>
+    <select id="category" name="categoryId">
+        <!-- Populate options dynamically from database -->
+        <option value="">Select category</option>
+        <!-- Thymeleaf iteration to populate category options -->
+        <!--        <option value="">All</option>-->
+        <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+    </select><br>
+    <label for="employeeId">EmployeeId:</label>
+    <select id="employeeId" name="employeeId">
+        <!-- Populate options dynamically from database -->
+        <option value="">Select Employee ID</option>
+        <!-- Thymeleaf iteration to populate category options -->
+        <!--        <option value="">All</option>-->
+        <option th:each="employee : ${employees}" th:value="${employee.employeeId}" th:text="${employee.firstName}"></option>
+    </select><br>
+    <label for="status">Status:</label>
+    <select id="status" name="status">
+        <!-- Populate options dynamically from database -->
+        <option value="">Select Status</option>
+        <!-- Thymeleaf iteration to populate category options -->
+        <!--        <option value="">All</option>-->
+        <option th:each="status : ${statuses}" th:value="${status.statusId}" th:text="${status.statusMessage}"></option>
+    </select><br>
+    <input type="submit" value="Submit" >
+
+</form>
+<script>
+    function disableDropdowns() {
+        document.getElementById("category").disabled = true;
+        document.getElementById("employeeId").disabled = true;
+        document.getElementById("status").disabled = true;
+    }
+
+    function enableDropdowns() {
+        document.getElementById("category").disabled = false;
+        document.getElementById("employeeId").disabled = false;
+        document.getElementById("status").disabled = false;
+    }
+
+    // Call enableDropdowns() when the checkbox is unchecked
+    document.getElementById("showAll").addEventListener("change", function() {
+        if (!this.checked) {
+            enableDropdowns();
+        }
+    });
+</script>
 </body>
 </html>

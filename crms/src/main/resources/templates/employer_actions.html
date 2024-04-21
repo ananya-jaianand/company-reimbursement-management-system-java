@@ -1,0 +1,331 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Employer Page</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+
+<!--        h1, h2 {-->
+<!--            text-align: center;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+
+<!--         #welcome-section {-->
+<!--            padding: 20px;-->
+<!--            margin: 20px auto;-->
+<!--            width: 20%;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        form {-->
+<!--            max-width: 1000px;-->
+<!--            margin: 20px auto;-->
+<!--            background-color: #fff;-->
+<!--            padding: 20px;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        label {-->
+<!--            display: block;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        select, input[type="text"] {-->
+<!--            width: calc(100% - 10px);-->
+<!--            padding: 8px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 4px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        input[type="submit"], button[type="submit"] {-->
+<!--            background-color: #007bff;-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s ease;-->
+<!--        }-->
+
+<!--        input[type="submit"]:hover, button[type="submit"]:hover {-->
+<!--            background-color: #0056b3;-->
+<!--        }-->
+
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+
+<!--        th, td {-->
+<!--            border: 1px solid #ddd;-->
+<!--            padding: 8px;-->
+<!--            text-align: left;-->
+<!--        }-->
+
+<!--        th {-->
+<!--            background-color: #f2f2f2;-->
+<!--        }-->
+
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--&lt;!&ndash;  display results obtained from the viewReim controller&ndash;&gt;-->
+<!--<form id="reimbursementsTable" style="..." method="post" th:action="@{/employer_actions/{id}/changeReimbursements(id=${employer.employeeId})}">-->
+<!--    <h2>Reimbursements List</h2>-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>     </th>-->
+<!--            <th>Reimbursement ID</th>-->
+<!--            <th>Category</th>-->
+<!--            <th>Employee ID</th>-->
+<!--            <th>Status</th>-->
+<!--            <th>Date Submitted</th>-->
+<!--            <th>Amount Requested</th>-->
+<!--            <th>Receipt ID</th>-->
+<!--            <th>Document Date</th>-->
+<!--            <th>Vendor Name</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        &lt;!&ndash; Use Thymeleaf iteration to loop through fetched reimbursements &ndash;&gt;-->
+
+<!--        <tr th:each="reimbursement : ${reimbursements}">-->
+<!--            &lt;!&ndash;            <td th:if="${reimbursement.status.statusId == 1}">&ndash;&gt;-->
+<!--            &lt;!&ndash;                <input type="radio" id="requestId" name="requestId" th:value="${reimbursement.requestId}" />&ndash;&gt;-->
+<!--            &lt;!&ndash;            </td>&ndash;&gt;-->
+<!--            <td>-->
+<!--                &lt;!&ndash; Check if status ID is 1 &ndash;&gt;-->
+<!--                <span th:if="${reimbursement.status.statusId == 1}">-->
+<!--            <input type="radio" id="requestId" name="requestId" th:value="${reimbursement.requestId}" />-->
+<!--        </span>-->
+<!--                &lt;!&ndash; Display "Final" if status ID is not 1 &ndash;&gt;-->
+<!--                <span th:unless="${reimbursement.status.statusId == 1}">-->
+<!--            Final-->
+<!--        </span>-->
+<!--            </td>-->
+<!--            <td th:text="${reimbursement.requestId}"></td>-->
+<!--            <td th:text="${reimbursement.category.categoryName}"></td>-->
+<!--            <td th:text="${reimbursement.employeeId}"></td>-->
+<!--            <td th:text="${reimbursement.status.statusMessage}"></td>-->
+<!--            <td th:text="${reimbursement.dateSubmitted}"></td>-->
+<!--            <td th:text="${reimbursement.amountRequested}"></td>-->
+<!--            <td th:text="${reimbursement.receiptId}"></td>-->
+<!--            <td th:text="${reimbursement.documentDate}"></td>-->
+<!--            <td th:text="${reimbursement.vendorName}"></td>-->
+
+<!--        </tr>-->
+
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <br>-->
+<!--    <br>-->
+<!--    &lt;!&ndash;    <label>Enter new status Id:&ndash;&gt;-->
+<!--    &lt;!&ndash;        <input type="text" id="newStatus" name="newStatus">&ndash;&gt;-->
+<!--    &lt;!&ndash;    </label>&ndash;&gt;-->
+<!--    &lt;!&ndash;    <button type="submit">Submit</button>&ndash;&gt;-->
+
+<!--    <div id="newStatusLabel" style="display: none;">-->
+<!--        <label for="newStatus" >Enter new status Id:-->
+<!--            <input type="text" id="newStatus" name="newStatus">-->
+<!--        </label>-->
+<!--        &lt;!&ndash; Submit button &ndash;&gt;-->
+<!--        <button type="submit">Submit</button>-->
+<!--    </div>-->
+<!--</form>-->
+
+<!--<script>-->
+<!--    // Get radio button element-->
+<!--    var radioButton = document.getElementById('requestId');-->
+<!--    // Get text box element-->
+<!--    var newStatusTextBox = document.getElementById('newStatusLabel');-->
+
+<!--    // Add event listener to radio button-->
+<!--    radioButton.addEventListener('change', function() {-->
+<!--        // If radio button is checked, display text box; otherwise, hide it-->
+<!--        if (radioButton.checked) {-->
+<!--            newStatusTextBox.style.display = 'block';-->
+<!--        } else {-->
+<!--            newStatusTextBox.style.display = 'none';-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #welcome-section {
+            padding: 20px;
+            margin: 20px auto;
+            width: 20%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"], button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover, button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+
+<body>
+<!--  display results obtained from the viewReim controller-->
+<form id="reimbursementsTable" style="..." method="post" th:action="@{/employer_actions/{id}/changeReimbursements(id=${employer.employeeId})}">
+    <h2>Reimbursements List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>Reimbursement ID</th>
+            <th>Category</th>
+            <th>Employee ID</th>
+            <th>Status</th>
+            <th>Date Submitted</th>
+            <th>Amount Requested</th>
+            <th>Receipt ID</th>
+            <th>Document Date</th>
+            <th>Vendor Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Use Thymeleaf iteration to loop through fetched reimbursements -->
+        <tr th:each="reimbursement : ${reimbursements}">
+            <td>
+                <!-- Check if status ID is 1 -->
+                <span th:if="${reimbursement.status.statusId == 1}">
+                    <input type="radio" class="radioButton" name="requestId" th:value="${reimbursement.requestId}" />
+                </span>
+                <!-- Display "Final" if status ID is not 1 -->
+                <span th:unless="${reimbursement.status.statusId == 1}">
+                    Final
+                </span>
+            </td>
+            <td th:text="${reimbursement.requestId}"></td>
+            <td th:text="${reimbursement.category.categoryName}"></td>
+            <td th:text="${reimbursement.employeeId}"></td>
+            <td th:text="${reimbursement.status.statusMessage}"></td>
+            <td th:text="${reimbursement.dateSubmitted}"></td>
+            <td th:text="${reimbursement.amountRequested}"></td>
+            <td th:text="${reimbursement.receiptId}"></td>
+            <td th:text="${reimbursement.documentDate}"></td>
+            <td th:text="${reimbursement.vendorName}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <!--    <label>Enter new status Id:-->
+    <!--        <input type="text" id="newStatus" name="newStatus">-->
+    <!--    </label>-->
+    <!--    <button type="submit">Submit</button>-->
+
+    <div id="newStatusLabel" style="display: none;">
+        <label for="newStatus">Enter new status Id:
+            <input type="text" id="newStatus" name="newStatus">
+        </label>
+        <!-- Submit button -->
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+<script>
+    // Get radio button elements
+    var radioButtons = document.querySelectorAll('.radioButton');
+    // Get text box element
+    var newStatusTextBox = document.getElementById('newStatusLabel');
+
+    // Add event listener to each radio button
+    radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', function() {
+            // If any radio button is checked, display text box; otherwise, hide it
+            if (document.querySelector('.radioButton:checked')) {
+                newStatusTextBox.style.display = 'block';
+            } else {
+                newStatusTextBox.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

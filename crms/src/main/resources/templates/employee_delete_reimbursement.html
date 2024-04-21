@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Delete Reimbursement Page</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        }
+
+        h1 {
+        text-align: center;
+        margin-top: 20px;
+        }
+
+        form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+        display: block;
+        margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+        background-color: #dc3545; /* Red color for delete button */
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+        background-color: #c82333; /* Darker red on hover */
+        }
+
+    </style>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+
+<h1>Company Reimbursement Management System</h1>
+<form id="deletereimbursementForm" method="post" th:action="@{/employee/{id}/delete/{requestid}(id=${employee.employeeId},requestid=${reimbursement.requestId})}">
+    <h2>Employee Delete Reimbursement</h2>
+    <label th:text="'Are you sure you want to delete the reimbursement with request id = ' + ${reimbursement.requestId} + '?'"></label>
+    <input type="submit" value="Submit">
+</form>
+
+
+</body>
+</html>

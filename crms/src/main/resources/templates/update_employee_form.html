@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Company Reimbursement Management System - Admin Page</h1>
+<h2>Update Employee</h2>
+
+<form action="#" th:action="@{/admin/updateEmployee}" th:object="${employee}" method="post">
+    <input type="hidden" th:field="*{employeeId}" />
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" />
+    </div>
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" />
+    </div>
+    <div>
+        <label for="phoneNo">Phone No:</label>
+        <input type="text" id="phoneNo" th:field="*{phoneNo}" />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email" th:field="*{email}" />
+    </div>
+    <div>
+        <label for="department">Department:</label>
+        <input type="text" id="department" th:field="*{department}" />
+    </div>
+    <div>
+        <label for="salary">Salary:</label>
+        <input type="text" id="salary" th:field="*{salary}" />
+    </div>
+    <div>
+        <label for="managerId">Manager ID:</label>
+        <input type="text" id="managerId" th:field="*{managerId}" />
+    </div>
+    <button type="submit">Update Employee</button>
+</form>
+
+</body>
+</html>

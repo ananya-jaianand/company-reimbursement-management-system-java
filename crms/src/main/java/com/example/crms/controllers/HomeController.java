@@ -9,14 +9,17 @@ import com.example.crms.services.EmployeeService;
 import com.example.crms.services.ReimbursementService;
 import com.example.crms.services.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -53,8 +56,9 @@ public class HomeController {
                 model.addAttribute("employee", employeeService.getEmployeeById(employeeId));
                 return "redirect:/employee/"+ employeeId;
             } else if ("employer".equals(role)) {
-                model.addAttribute("employer", employeeService.getEmployeeById(employeeId)); // Assuming employer info is retrieved in a similar way as employee
-                return "redirect:/employer/"+ employeeId;
+                if (employeeService.getEmployerById(employeeId) != null){
+                model.addAttribute("employer", employeeService.getEmployerById(employeeId)); // Assuming employer info is retrieved in a similar way as employee
+                return "redirect:/employer/"+ employeeId;}
             }
         } else {
             // Employee does not exist, return error message
@@ -66,53 +70,9 @@ public class HomeController {
         return "redirect:/";
     }
 
-    // Handler for employee page
-    @GetMapping("/employee/{id}")
-    public String employeePage(@PathVariable("id") Integer employeeId, Model model) {
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        model.addAttribute("employee", employee);
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "employee";
-    }
 
 
-    // Handler for creating a reimbursement
-    @PostMapping("/employee/{id}/createReimbursement")
-    public String createReimbursement(@PathVariable("id") Integer employeeId, @ModelAttribute Reimbursement reimbursement, Model model) {
 
-//        model.addAttribute("categories", categoryService.getAllCategories());
-        reimbursement.setEmployeeId(employeeId);
-        reimbursement.setDateSubmitted(new Date());
-        reimbursement.setStatusId(1);
-
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        Category category = categoryService.getCategoryById(reimbursement.getCategoryId());
-        Status status = statusService.getStatusById(reimbursement.getStatusId());
-
-        // Set the fetched entities on the reimbursement object
-        reimbursement.setEmployee(employee);
-        reimbursement.setCategory(category);
-        reimbursement.setStatus(status);
-
-
-        // Save reimbursement
-        reimbursementService.createReimbursement(reimbursement);
-
-        // Add success message
-        model.addAttribute("message", "Reimbursement created successfully!");
-
-        // Redirect back to the employee page
-        return "redirect:/employee/" + employeeId;
-    }
-
-    // Handler for employer page
-    @GetMapping("/employer/{id}")
-    public String employerPage(@PathVariable("id") Integer employerId, Model model) {
-
-            model.addAttribute("employer", employeeService.getEmployeeById(employerId));
-            return "employer";
-
-    }
 
 }
 

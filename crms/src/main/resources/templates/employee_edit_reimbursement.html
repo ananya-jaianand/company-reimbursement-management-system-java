@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Edit Reimbursement Page</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+        width: calc(100% - 22px); /* Adjust width to accommodate label */
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    </style>
+    <script type="text/javascript">
+
+
+    </script>
+</head>
+<body>
+
+<h1>Company Reimbursement Management System</h1>
+<form id="editreimbursementForm" method="post" th:action="@{/employee/{id}/edit/{requestid}(id=${employee.employeeId},requestid=${reimbursement.requestId})}">
+    <h2>Employee Edit Reimbursement</h2>
+    <label for="category">Category:</label>
+    <select id="category" name="categoryId">
+        <option value="">Select category</option>
+        <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                th:text="${category.categoryName}" th:selected="${category.categoryId == reimbursement.category.categoryId}">
+        </option>
+    </select><br>
+    <label for="amountRequested">Amount Requested:</label>
+    <input type="text" id="amountRequested" name="amountRequested" th:value="${reimbursement.amountRequested}"><br>
+    <label for="receiptId">Receipt ID:</label>
+    <input type="text" id="receiptId" name="receiptId" th:value="${reimbursement.receiptId}"><br>
+    <label for="documentDate">Document Date:</label>
+    <input type="date" id="documentDate" name="documentDate" th:value="${#dates.format(reimbursement.documentDate, 'yyyy-MM-dd')}"><br>
+    <label for="vendorName">Vendor Name:</label>
+    <input type="text" id="vendorName" name="vendorName" th:value="${reimbursement.vendorName}"><br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
